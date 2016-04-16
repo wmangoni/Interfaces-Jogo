@@ -1,6 +1,23 @@
 html, body{
-	margin: 0px
+	margin: 0px;
+	height: 100vh;
+	font: 13px/20px 'MedievalSharp', cursive, normal Helvetica, Arial, sans-serif;color: #c1c1c1;
+	text-shadow: 2px 2px 8px #FB4;
 }
 .title{
 	height: 100px;
+}
+div.container{
+	background: rgba(0,0,0,.8);
+	height: 100%;
+	width: 100%;
+}
+.navbar{
+	background-color: #aaa;
+	border: 5px solid #fff
+}
+.navbar div, .navbar td{
+	background: none !important;
+	box-shadow: none !important;
+	border: none !important;
 }
