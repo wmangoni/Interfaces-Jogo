@@ -29,7 +29,7 @@ boneco = {
 	largura: 50,
 	cor: "#A8A83E",
 	border: 2,
-	gravidade: 1.5,
+	gravidade: 0.8,
 	velocidade: 0,
 	forcaDoPulo: 25,
 	qntPulos: 0,
@@ -51,6 +51,20 @@ boneco = {
 		}
 	},
 
+	moveRight: function(){
+		if (this.x < window.innerWidth - (30 + margenX)) {
+			this.x += 20;
+		}
+	},
+	moveLeft: function(){
+		if (this.x > 0) {
+			this.x -= 20;
+		}
+	},
+	moveDown: function(){
+		this.altura = 30;
+	},
+
 	desenha: function(){
 		ctx.fillStyle = this.cor;
 		ctx.fillStyle = this.border;
@@ -60,6 +74,35 @@ boneco = {
 
 function click(event){
 	boneco.pula();
+}
+function keydown(event){
+	console.log('e : '+event.which);
+	switch (event.which) {
+		case 68:
+			boneco.moveRight();
+			break;
+		case 65:
+			boneco.moveLeft();
+			break;
+		case 83:
+			//boneco.moveDown();
+			break;
+		case 32:
+			boneco.pula();
+			break;
+		case 69:
+			if (boneco.altura < 200) boneco.altura += 2;
+			break;
+		case 81:
+			if (boneco.altura > 4) boneco.altura -= 2;
+			break;
+		case 87:
+			boneco.pula();
+			break;
+		default:
+			// statements_def
+			break;
+	}
 }
 
 function main(){
@@ -77,6 +120,7 @@ function main(){
 	ctx = canvas.getContext("2d");
 	document.body.appendChild(canvas);
 	document.addEventListener("mousedown", click);
+	document.addEventListener("keydown", keydown);
 	roda();
 }
 
