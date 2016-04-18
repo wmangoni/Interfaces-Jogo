@@ -21,15 +21,16 @@ ceu = {
 		ctx.fillStyle = this.cor;
 		ctx.fillRect(0, this.y, LARGURA, this.altura);
 	}
+
 }
 boneco = {
 	x: 50,
 	y: 0,
 	altura: 50,
-	largura: 50,
+	largura: 33,
 	cor: "#A8A83E",
 	border: 2,
-	gravidade: 0.8,
+	gravidade: 1.2,
 	velocidade: 0,
 	forcaDoPulo: 25,
 	qntPulos: 0,
@@ -56,6 +57,12 @@ boneco = {
 			this.x += 20;
 		}
 	},
+	teleportRight: function(){
+		this.x = window.innerWidth - (50 + margenX);
+	},
+	teleportLeft: function(){
+		this.x = 20;
+	},
 	moveLeft: function(){
 		if (this.x > 0) {
 			this.x -= 20;
@@ -66,9 +73,12 @@ boneco = {
 	},
 
 	desenha: function(){
-		ctx.fillStyle = this.cor;
-		ctx.fillStyle = this.border;
-		ctx.fillRect(this.x, this.y, this.largura, this.altura);
+		var img = new Image();
+		img.src = "img/spritexb-1574.png";
+		ctx.drawImage( img , this.x, this.y, this.largura, this.altura);
+		//ctx.fillStyle = this.cor;
+		//ctx.fillStyle = this.border;
+		//ctx.fillRect(this.x, this.y, this.largura, this.altura);
 	}
 }
 
@@ -78,25 +88,25 @@ function click(event){
 function keydown(event){
 	console.log('e : '+event.which);
 	switch (event.which) {
-		case 68:
+		case 68: //btn D
 			boneco.moveRight();
 			break;
-		case 65:
+		case 65: //btn A
 			boneco.moveLeft();
 			break;
-		case 83:
+		case 83: //btn S
 			//boneco.moveDown();
 			break;
-		case 32:
+		case 32: //btn W
 			boneco.pula();
 			break;
-		case 69:
-			if (boneco.altura < 200) boneco.altura += 2;
+		case 69: //btn E
+			boneco.teleportRight();
 			break;
-		case 81:
-			if (boneco.altura > 4) boneco.altura -= 2;
+		case 81: //btn Q
+			boneco.teleportLeft();
 			break;
-		case 87:
+		case 87: //btn espaço
 			boneco.pula();
 			break;
 		default:
@@ -137,10 +147,17 @@ function atualiza(){
 }
 
 function desenha(){
-	ctx.fillStyle = "#50beff";
-	ctx.fillRect(0, 0, LARGURA, ALTURA);
+	var img = new Image();
+	img.src = "img/mountain_full_background1.png";
+	ctx.drawImage( img , 0, 0 , LARGURA , ALTURA);
+	//ctx.fillStyle = "#50beff";
+	//ctx.fillRect(0, 0, LARGURA, ALTURA);
+    //ctx.rect(0, 0, 150, 100);
+    //ctx.fillStyle = pat;
+    //ctx.fill();
 
-	chao.desenha();
+	//ceu.desenha();
+	//chao.desenha();
 	boneco.desenha();
 }
 
