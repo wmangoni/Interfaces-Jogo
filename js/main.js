@@ -34,6 +34,7 @@ boneco = {
 	velocidade: 0,
 	forcaDoPulo: 25,
 	qntPulos: 0,
+	velocidadeMove: 15,
 
 	atualiza: function(){
 		this.velocidade += this.gravidade;
@@ -54,7 +55,7 @@ boneco = {
 
 	moveRight: function(){
 		if (this.x < window.innerWidth - (30 + margenX)) {
-			this.x += 20;
+			this.x += this.velocidadeMove;
 		}
 	},
 	teleportRight: function(){
@@ -65,7 +66,7 @@ boneco = {
 	},
 	moveLeft: function(){
 		if (this.x > 0) {
-			this.x -= 20;
+			this.x -= this.velocidadeMove;
 		}
 	},
 	moveDown: function(){
@@ -148,13 +149,10 @@ function atualiza(){
 
 function desenha(){
 	var img = new Image();
-	img.src = "img/mountain_full_background1.png";
+	//img.src = "img/mountain_full_background1.png";
+	img.src = "img/cenario_3.gif";
 	ctx.drawImage( img , 0, 0 , LARGURA , ALTURA);
-	//ctx.fillStyle = "#50beff";
-	//ctx.fillRect(0, 0, LARGURA, ALTURA);
-    //ctx.rect(0, 0, 150, 100);
-    //ctx.fillStyle = pat;
-    //ctx.fill();
+	//Math.random()
 
 	//ceu.desenha();
 	//chao.desenha();
