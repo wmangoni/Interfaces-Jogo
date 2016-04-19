@@ -1,9 +1,10 @@
-var canvas, ctx, ALTURA, LARGURA, frames = 0, maxPulos = 2;
+var canvas, ctx, ALTURA, LARGURA, frames = 0, maxPulos = 2, redimensionamento = 4;
 var margenX = 40;
 var margenY = 20;
 
 chao = {
-	y: window.innerHeight - (50 + margenX),
+	y: window.innerHeight - (50 + margenY),
+	static_y: window.innerHeight - (50 + margenY),
 	altura: 50,
 	cor: "#96CC50",
 
@@ -36,7 +37,7 @@ boneco = {
 	velocidade: 0,
 	forcaDoPulo: 25,
 	qntPulos: 0,
-	velocidadeMove: 15,
+	velocidadeMove: 12,
 
 	atualiza: function(){
 		this.velocidade += this.gravidade;
@@ -116,7 +117,66 @@ boneco = {
 		}
 	},
 	moveDown: function(){
-		this.altura = 30;
+		if(this.altura < 62){
+			this.largura += redimensionamento;
+			this.altura += redimensionamento;
+		}
+		if (chao.y < chao.static_y + 12){
+			chao.y += redimensionamento;
+		}
+		switch (this.cx) {
+			case 0:
+				this.cx = 33;
+				this.cy = 0;
+				break;
+			case 33:
+				this.cx = 66;
+				this.cy = 0;
+				break;
+			case 66:
+				this.cx = 99;
+				this.cy = 0;
+				break;
+			case 99:
+				this.cx = 0;
+				this.cy = 0;
+				break;
+			default:
+				this.cx = 0;
+				this.cy = 0;
+				break;
+		}
+	},
+	moveUp: function(){
+		if(this.altura > 38){
+			this.largura -= redimensionamento;
+			this.altura -= redimensionamento;
+		}
+		if (chao.y > chao.static_y - 12){
+			chao.y -= redimensionamento;
+		}
+		switch (this.cx) {
+			case 0:
+				this.cx = 33;
+				this.cy = 148;
+				break;
+			case 33:
+				this.cx = 66;
+				this.cy = 148;
+				break;
+			case 66:
+				this.cx = 99;
+				this.cy = 148;
+				break;
+			case 99:
+				this.cx = 0;
+				this.cy = 148;
+				break;
+			default:
+				this.cx = 0;
+				this.cy = 0;
+				break;
+		}
 	},
 
 	desenha: function(){
@@ -126,8 +186,8 @@ boneco = {
 			img,
 			this.cx,
 			this.cy,
-			this.largura,
-			this.altura,
+			33,
+			50,
 			this.x,
 			this.y,
 			this.largura,
@@ -153,9 +213,9 @@ function keydown(event){
 			boneco.moveLeft();
 			break;
 		case 83: //btn S
-			//boneco.moveDown();
+			boneco.moveDown();
 			break;
-		case 32: //btn W
+		case 32: //btn espaço
 			boneco.pula();
 			break;
 		case 69: //btn E
@@ -164,8 +224,8 @@ function keydown(event){
 		case 81: //btn Q
 			boneco.teleportLeft();
 			break;
-		case 87: //btn espaço
-			boneco.pula();
+		case 87: //btn w
+			boneco.moveUp();
 			break;
 		default:
 			// statements_def
