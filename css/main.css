@@ -2,22 +2,153 @@ html, body{
 	margin: 0px;
 	height: 100vh;
 	font: 13px/20px 'MedievalSharp', cursive, normal Helvetica, Arial, sans-serif;color: #c1c1c1;
-	text-shadow: 2px 2px 8px #FB4;
+	text-shadow: 2px 2px 4px #d1d1d1;
 }
-.title{
+td a{
+	color: #56C364;
+	font-size: 26px;
+}
+td a:hover{
+	color: #56DF63;
+	transition-timing-function: cubic-bezier(0.005, 0.625, 0.365, 0.0840);
+	transition: text-decoration 0.5s;
+}
+.title {
+	font-size: 48px !important;
 	height: 100px;
+	color: green;
+	text-shadow: 2px 2px 4px #444;
+	transition:All 0.9629s ease;
+	-webkit-transition:All 0.9629s ease;
+	-moz-transition:All 0.9629s ease;
+	-o-transition:All 0.9629s ease;
+	transform: rotate(0deg) scale(0.802) skew(1deg) translate(0px);
+	-webkit-transform: rotate(0deg) scale(0.802) skew(1deg) translate(0px);
+	-moz-transform: rotate(0deg) scale(0.802) skew(1deg) translate(0px);
+	-o-transform: rotate(0deg) scale(0.802) skew(1deg) translate(0px);
+	-ms-transform: rotate(0deg) scale(0.802) skew(1deg) translate(0px);
+}
+.title:hover{
+	transform: rotate(5deg) scale(0.861) skew(1deg) translate(2px);
+	-webkit-transform: rotate(5deg) scale(0.861) skew(1deg) translate(2px);
+	-moz-transform: rotate(5deg) scale(0.861) skew(1deg) translate(2px);
+	-o-transform: rotate(5deg) scale(0.861) skew(1deg) translate(2px);
+	-ms-transform: rotate(5deg) scale(0.861) skew(1deg) translate(2px);
 }
 div.container{
-	background: rgba(0,0,0,.8);
+	/*background-image: url("../img/Ecologia-humana-2.jpg");*/
+	background-image: url("../img/slide_1.jpg");
+	background-repeat: no-repeat;
+	-webkit-background-size: cover;
+	background-size: cover;
 	height: 100%;
 	width: 100%;
 }
 .navbar{
-	background-color: #aaa;
-	border: 5px solid #fff
+	background-image: url("../img/quadro-negro5.jpg");
+	background-position: center;
+	-webkit-background-size: cover;
+	background-size: cover;
+	min-height: 626px;
+	border: 5px solid #fff;
+	text-align: center;
+	padding-top: 100px;
 }
 .navbar div, .navbar td{
 	background: none !important;
 	box-shadow: none !important;
 	border: none !important;
+}
+.panel-title{
+	font-size: 36px;
+	color: #fff;
+	opacity: 0.8;
+}
+
+.panel-title:hover{
+  animation: animationFrames ease 6s;
+  animation-iteration-count: infinite;
+  transform-origin: 50% 50%;
+  -webkit-animation: animationFrames ease 6s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-transform-origin: 50% 50%;
+  -moz-animation: animationFrames ease 6s;
+  -moz-animation-iteration-count: infinite;
+  -moz-transform-origin: 50% 50%;
+  -o-animation: animationFrames ease 6s;
+  -o-animation-iteration-count: infinite;
+  -o-transform-origin: 50% 50%;
+  -ms-animation: animationFrames ease 6s;
+  -ms-animation-iteration-count: infinite;
+  -ms-transform-origin: 50% 50%;
+}
+
+@keyframes animationFrames{
+  0% {transform:  translate(0px,0px)  ;}
+  10% {transform:  translate(-10px,0px)  ;}
+  20% {transform:  translate(10px,0px)  ;}
+  30% {transform:  translate(-10px,0px)  ;}
+  40% {transform:  translate(10px,0px)  ;}
+  50% {transform:  translate(-10px,0px)  ;}
+  60% {transform:  translate(10px,0px)  ;}
+  70% {transform:  translate(-10px,0px)  ;}
+  80% {transform:  translate(10px,0px)  ;}
+  90% {transform:  translate(-10px,0px)  ;}
+  100% {transform:  translate(0px,0px)  ;}
+}
+
+@-moz-keyframes animationFrames{
+  0% {-moz-transform:  translate(0px,0px)  ;}
+  10% {-moz-transform:  translate(-10px,0px)  ;}
+  20% {-moz-transform:  translate(10px,0px)  ;}
+  30% {-moz-transform:  translate(-10px,0px)  ;}
+  40% {-moz-transform:  translate(10px,0px)  ;}
+  50% {-moz-transform:  translate(-10px,0px)  ;}
+  60% {-moz-transform:  translate(10px,0px)  ;}
+  70% {-moz-transform:  translate(-10px,0px)  ;}
+  80% {-moz-transform:  translate(10px,0px)  ;}
+  90% {-moz-transform:  translate(-10px,0px)  ;}
+  100% {-moz-transform:  translate(0px,0px)  ;}
+}
+
+@-webkit-keyframes animationFrames {
+  0% {-webkit-transform:  translate(0px,0px)  ;}
+  10% {-webkit-transform:  translate(-10px,0px)  ;}
+  20% {-webkit-transform:  translate(10px,0px)  ;}
+  30% {-webkit-transform:  translate(-10px,0px)  ;}
+  40% {-webkit-transform:  translate(10px,0px)  ;}
+  50% {-webkit-transform:  translate(-10px,0px)  ;}
+  60% {-webkit-transform:  translate(10px,0px)  ;}
+  70% {-webkit-transform:  translate(-10px,0px)  ;}
+  80% {-webkit-transform:  translate(10px,0px)  ;}
+  90% {-webkit-transform:  translate(-10px,0px)  ;}
+  100% {-webkit-transform:  translate(0px,0px)  ;}
+}
+
+@-o-keyframes animationFrames {
+  0% {-o-transform:  translate(0px,0px)  ;}
+  10% {-o-transform:  translate(-10px,0px)  ;}
+  20% {-o-transform:  translate(10px,0px)  ;}
+  30% {-o-transform:  translate(-10px,0px)  ;}
+  40% {-o-transform:  translate(10px,0px)  ;}
+  50% {-o-transform:  translate(-10px,0px)  ;}
+  60% {-o-transform:  translate(10px,0px)  ;}
+  70% {-o-transform:  translate(-10px,0px)  ;}
+  80% {-o-transform:  translate(10px,0px)  ;}
+  90% {-o-transform:  translate(-10px,0px)  ;}
+  100% {-o-transform:  translate(0px,0px)  ;}
+}
+
+@-ms-keyframes animationFrames {
+  0% {-ms-transform:  translate(0px,0px)  ;}
+  10% {-ms-transform:  translate(-10px,0px)  ;}
+  20% {-ms-transform:  translate(10px,0px)  ;}
+  30% {-ms-transform:  translate(-10px,0px)  ;}
+  40% {-ms-transform:  translate(10px,0px)  ;}
+  50% {-ms-transform:  translate(-10px,0px)  ;}
+  60% {-ms-transform:  translate(10px,0px)  ;}
+  70% {-ms-transform:  translate(-10px,0px)  ;}
+  80% {-ms-transform:  translate(10px,0px)  ;}
+  90% {-ms-transform:  translate(-10px,0px)  ;}
+  100% {-ms-transform:  translate(0px,0px)  ;}
 }
