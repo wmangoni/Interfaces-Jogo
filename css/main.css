@@ -18,6 +18,8 @@ td a:hover{
 	height: 100px;
 	color: green;
 	text-shadow: 2px 2px 4px #444;
+  animation: animationFramesTitle ease 2s;
+  animation-iteration-count: infinite;
 	transition:All 0.9629s ease;
 	-webkit-transition:All 0.9629s ease;
 	-moz-transition:All 0.9629s ease;
@@ -27,13 +29,6 @@ td a:hover{
 	-moz-transform: rotate(0deg) scale(0.802) skew(1deg) translate(0px);
 	-o-transform: rotate(0deg) scale(0.802) skew(1deg) translate(0px);
 	-ms-transform: rotate(0deg) scale(0.802) skew(1deg) translate(0px);
-}
-.title:hover{
-	transform: rotate(5deg) scale(0.861) skew(1deg) translate(2px);
-	-webkit-transform: rotate(5deg) scale(0.861) skew(1deg) translate(2px);
-	-moz-transform: rotate(5deg) scale(0.861) skew(1deg) translate(2px);
-	-o-transform: rotate(5deg) scale(0.861) skew(1deg) translate(2px);
-	-ms-transform: rotate(5deg) scale(0.861) skew(1deg) translate(2px);
 }
 div.container{
 	/*background-image: url("../img/Ecologia-humana-2.jpg");*/
@@ -151,4 +146,38 @@ div.container{
   80% {-ms-transform:  translate(10px,0px)  ;}
   90% {-ms-transform:  translate(-10px,0px)  ;}
   100% {-ms-transform:  translate(0px,0px)  ;}
+}
+
+/*******************************************
+*
+********************************************/
+
+@keyframes animationFramesTitle{
+  0% {transform: rotate(1deg) scale(0.800) skew(1deg) translate(1px);}
+  50% {transform: rotate(3deg) scale(0.870) skew(2deg) translate(2px);}
+  100% {transform: rotate(1deg) scale(0.800) skew(1deg) translate(1px);}
+}
+
+@-moz-keyframes animationFramesTitle{
+  0% {transform: rotate(1deg) scale(0.800) skew(1deg) translate(1px);}
+  50% {transform: rotate(3deg) scale(0.870) skew(2deg) translate(2px);}
+  100% {transform: rotate(1deg) scale(0.800) skew(1deg) translate(1px);}
+}
+
+@-webkit-keyframes animationFramesTitle {
+  0% {transform: rotate(1deg) scale(0.800) skew(1deg) translate(1px);}
+  50% {transform: rotate(3deg) scale(0.870) skew(2deg) translate(2px);}
+  100% {transform: rotate(1deg) scale(0.800) skew(1deg) translate(1px);}
+}
+
+@-o-keyframes animationFramesTitle {
+  0% {transform: rotate(1deg) scale(0.800) skew(1deg) translate(1px);}
+  50% {transform: rotate(3deg) scale(0.870) skew(2deg) translate(2px);}
+  100% {transform: rotate(1deg) scale(0.800) skew(1deg) translate(1px);}
+}
+
+@-ms-keyframes animationFramesTitle {
+  0% {transform: rotate(1deg) scale(0.800) skew(1deg) translate(1px);}
+  50% {transform: rotate(3deg) scale(0.870) skew(2deg) translate(2px);}
+  100% {transform: rotate(1deg) scale(0.800) skew(1deg) translate(1px);}
 }
