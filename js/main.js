@@ -1,29 +1,28 @@
 var canvas, ctx, ALTURA, LARGURA, frames = 0, maxPulos = 2, redimensionamento = 4;
-var margenX = 40;
-var margenY = 20;
+var margenX = 20;
+var margenY = 40;
 
 chao = {
 	y: window.innerHeight - (50 + margenY),
 	static_y: window.innerHeight - (50 + margenY),
 	altura: 50,
 	cor: "#96CC50",
-
 	desenha: function(){
 		ctx.fillStyle = this.cor;
 		ctx.fillRect(0, this.y, LARGURA, this.altura);
 	}
 }
+
 ceu = {
 	y: 0,
 	altura: 50,
 	cor: "#3E3EA8",
-
 	desenha: function(){
 		ctx.fillStyle = this.cor;
 		ctx.fillRect(0, this.y, LARGURA, this.altura);
 	}
-
 }
+
 boneco = {
 	x: 50,
 	y: 0,
@@ -237,8 +236,8 @@ function main(){
 
 	ALTURA = window.innerHeight;
 	LARGURA = window.innerWidth;
-	ALTURA -= margenX;
-	LARGURA -= margenY;
+	ALTURA -= margenY;
+	LARGURA -= margenX;
 
 	canvas = document.createElement("canvas");
 	canvas.width = LARGURA;
