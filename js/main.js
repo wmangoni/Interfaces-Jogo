@@ -51,8 +51,7 @@ obstaculos = {
 		for(var i = 0, tam = this._obs.length; i < tam; i++){
 			var obs = this._obs[i];
 			obs.y += velocidadeLixo;
-
-			if (boneco.y + boneco.altura <= obs.y + obs.altura && boneco.y > obs.y + obs.altura && obs.x < boneco.x + boneco.largura && obs.x + obs.largura > boneco.x) {
+			if (boneco.y + boneco.altura <= obs.y && obs.x < boneco.x + boneco.largura && obs.x + obs.largura > boneco.x) {
 				console.log('colisão');
 				VIDA--;
 				if(VIDA <= 0){
