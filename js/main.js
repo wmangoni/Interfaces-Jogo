@@ -1,6 +1,12 @@
-var canvas, ctx, ALTURA, LARGURA, frames = 0, maxPulos = 2, redimensionamento = 4, velocidadeLixo = 2;
+var canvas, ctx, VIDA = 3, ALTURA, LARGURA, frames = 0, maxPulos = 2, redimensionamento = 4, velocidadeLixo = 2, estadoAtual;
 var margenX = 20;
 var margenY = 40;
+
+estados = {
+	jogar: 0,
+	jogando: 1,
+	perdeu: 2
+}
 
 chao = {
 	y: window.innerHeight - (50 + margenY),
@@ -35,7 +41,7 @@ obstaculos = {
 			altura: 10 + Math.floor(30*Math.random()),
 			cor: this.cores[Math.floor(4*Math.random())]
 		});
-		this.tempoInsere = 500;
+		this.tempoInsere = 300 + Math.floor(200*Math.random());
 	},
 	atualiza: function(){
 		if(this.tempoInsere == 0)
@@ -45,7 +51,19 @@ obstaculos = {
 		for(var i = 0, tam = this._obs.length; i < tam; i++){
 			var obs = this._obs[i];
 			obs.y += velocidadeLixo;
-			if (obs.y > ALTURA + 30) {
+
+			if (boneco.y + boneco.altura <= obs.y + obs.altura && boneco.y > obs.y + obs.altura && obs.x < boneco.x + boneco.largura && obs.x + obs.largura > boneco.x) {
+				console.log('colisão');
+				VIDA--;
+				if(VIDA <= 0){
+					estadoAtual = estados.perdeu;
+				}
+			}
+			/*Condições de colisão
+			1 - Y do boneco (MENOR) < que Y + altura do lixo
+			2 - Y + altura >= y do lixo
+			*/
+			if (obs.y > ALTURA) {
 				this._obs.splice(i, 1);
 				tam--;
 				i--;
@@ -224,6 +242,9 @@ boneco = {
 }
 
 function click(event){
+	if (event.clientX > LARGURA / 2 - 50 && event.clientX < LARGURA / 2 + 50 && event.clientY > ALTURA / 2 - 50 && event.clientY < ALTURA / 2 + 50){
+		estadoAtual = estados.jogando;
+	}
 	boneco.pula();
 }
 function keydown(event){
@@ -273,6 +294,7 @@ function main(){
 	document.body.appendChild(canvas);
 	document.addEventListener("mousedown", click);
 	document.addEventListener("keydown", keydown);
+	estadoAtual = estados.jogar;
 	roda();
 }
 
@@ -294,10 +316,25 @@ function desenha(){
 	img.src = "img/mountain_full_background1.png";
 	//img.src = "img/cenario_3.gif";
 	ctx.drawImage( img , 0, 0 , LARGURA , ALTURA);
-	//ceu.desenha();
-	//chao.desenha();
-	obstaculos.desenha();
-	boneco.desenha();
+
+	if (estadoAtual == estados.jogar) {
+		ctx.fillStyle = "green";
+		ctx.fillRect(LARGURA / 2 - 50, ALTURA / 2 - 50, 100, 100 );
+		ctx.font = "20px Georgia";
+		ctx.fillText = "Jogar";
+	} else if(estadoAtual == estados.perdeu) {
+		ctx.fillStyle = "red";
+		ctx.fillRect(LARGURA / 2 - 50, ALTURA / 2 - 50, 100, 100 );
+		ctx.font = "20px Georgia";
+		ctx.fillText = "Game Over";
+	} else if(estadoAtual == estados.jogando) {
+		obstaculos.desenha();
+		//ceu.desenha();
+		//chao.desenha();
+		boneco.desenha();
+	}
+
 }
+
 
 main();
