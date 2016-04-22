@@ -1,4 +1,4 @@
-var canvas, ctx, ALTURA, LARGURA, frames = 0, maxPulos = 2, redimensionamento = 4;
+var canvas, ctx, ALTURA, LARGURA, frames = 0, maxPulos = 2, redimensionamento = 4, velocidadeLixo = 2;
 var margenX = 20;
 var margenY = 40;
 
@@ -20,6 +20,44 @@ ceu = {
 	desenha: function(){
 		ctx.fillStyle = this.cor;
 		ctx.fillRect(0, this.y, LARGURA, this.altura);
+	}
+}
+
+obstaculos = {
+	_obs: [],
+	cores: ["#ff0000", "#2E54FF", "#f6ff00", "#80ff00"],
+	tempoInsere: 0,
+	insere: function(){
+		this._obs.push({
+			x: 5+Math.floor(LARGURA*Math.random()),
+			y: 0,
+			largura: 10 + Math.floor(20*Math.random()),
+			altura: 10 + Math.floor(30*Math.random()),
+			cor: this.cores[Math.floor(4*Math.random())]
+		});
+		this.tempoInsere = 500;
+	},
+	atualiza: function(){
+		if(this.tempoInsere == 0)
+			this.insere();
+		else
+			this.tempoInsere--;
+		for(var i = 0, tam = this._obs.length; i < tam; i++){
+			var obs = this._obs[i];
+			obs.y += velocidadeLixo;
+			if (obs.y > ALTURA + 30) {
+				this._obs.splice(i, 1);
+				tam--;
+				i--;
+			}
+		}
+	},
+	desenha: function(){
+		for (var i = 0, tam = this._obs.length; i < tam; i++) {
+			var obs = this._obs[i];
+			ctx.fillStyle = obs.cor;
+			ctx.fillRect(obs.x, obs.y, obs.largura, obs.altura);
+		};
 	}
 }
 
@@ -181,20 +219,7 @@ boneco = {
 	desenha: function(){
 		var img = new Image();
 		img.src = "img/spritexb-1869.png";
-		ctx.drawImage(
-			img,
-			this.cx,
-			this.cy,
-			33,
-			50,
-			this.x,
-			this.y,
-			this.largura,
-			this.altura
-		);
-		//ctx.fillStyle = this.cor;
-		//ctx.fillStyle = this.border;
-		//ctx.fillRect(this.x, this.y, this.largura, this.altura);
+		ctx.drawImage(img,this.cx,this.cy,33,50,this.x,this.y,this.largura,this.altura);
 	}
 }
 
@@ -251,54 +276,6 @@ function main(){
 	roda();
 }
 
-function sprite (options) {
-
-    var that = {}, frameIndex = 0, tickCount = 0, ticksPerFrame = ticksPerFrame || 0, numberOfFrames = options.numberOfFrames || 1;
-
-    that.loop = options.loop;
-    that.context = options.context;
-    that.width = options.width;
-    that.height = options.height;
-    that.image = options.image;
-
-    that.render = function () {
-
-    	// Clear the canvas
-    	context.clearRect(0, 0, that.width, that.height);
-
-        // Draw the animation
-        that.context.drawImage(
-           that.image,
-           frameIndex * that.width / numberOfFrames,
-           0,
-           that.width / numberOfFrames,
-           that.height,
-           0,
-           0,
-           that.width / numberOfFrames,
-           that.height);
-    };
-    that.update = function () {
-
-        tickCount += 1;
-
-        if (tickCount > ticksPerFrame) {
-
-        	 tickCount = 0;
-
-            // If the current frame index is in range
-            if (frameIndex < numberOfFrames - 1) {
-                // Go to the next frame
-                frameIndex += 1;
-            } else if (that.loop) {
-                frameIndex = 0;
-            }
-        }
-    };
-
-    return that;
-}
-
 function roda(){
 	atualiza();
 	desenha();
@@ -309,6 +286,7 @@ function roda(){
 function atualiza(){
 	frames++;
 	boneco.atualiza();
+	obstaculos.atualiza();
 }
 
 function desenha(){
@@ -316,10 +294,9 @@ function desenha(){
 	img.src = "img/mountain_full_background1.png";
 	//img.src = "img/cenario_3.gif";
 	ctx.drawImage( img , 0, 0 , LARGURA , ALTURA);
-	//Math.random()
-
 	//ceu.desenha();
 	//chao.desenha();
+	obstaculos.desenha();
 	boneco.desenha();
 }
 
