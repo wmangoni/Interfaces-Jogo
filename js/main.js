@@ -1,6 +1,10 @@
-var canvas, ctx, VIDA = 3, ALTURA, LARGURA, frames = 0, maxPulos = 2, redimensionamento = 4, velocidadeLixo = 2, estadoAtual;
+var canvas, ctx, ALTURA, LARGURA, frames = 0, maxPulos = 2, redimensionamento = 4, velocidadeLixo = 2, estadoAtual, SCORE = 0, VIDA = 3;
 var margenX = 20;
 var margenY = 40;
+ALTURA = window.innerHeight;
+LARGURA = window.innerWidth;
+ALTURA -= margenY;
+LARGURA -= margenX;
 
 estados = {
 	jogar: 0,
@@ -12,20 +16,34 @@ chao = {
 	y: window.innerHeight - (50 + margenY),
 	static_y: window.innerHeight - (50 + margenY),
 	altura: 50,
-	cor: "#96CC50",
+	largura: 200,
+	cor: "#FFFFFF",
+	text: "SCORE: "+SCORE,
 	desenha: function(){
 		ctx.fillStyle = this.cor;
-		ctx.fillRect(0, this.y, LARGURA, this.altura);
+		ctx.font = "26px Comic Sans MS";
+		ctx.strokeText(this.text, 20, ALTURA - 26);
+		//ctx.fillRect(0, this.y, this.largura, this.altura);
+	},
+
+	atualiza: function(){
+		this.text = "SCORE: "+SCORE;
 	}
 }
 
 ceu = {
 	y: 0,
 	altura: 50,
-	cor: "#3E3EA8",
+	cor: "#FFFFFF",
+	text: "VIDA: "+VIDA,
 	desenha: function(){
 		ctx.fillStyle = this.cor;
-		ctx.fillRect(0, this.y, LARGURA, this.altura);
+		ctx.font = "26px Comic Sans MS";
+		ctx.strokeText(this.text, 20, this.y + 26);
+	},
+
+	atualiza: function(){
+		this.text = "VIDA: "+VIDA;
 	}
 }
 
@@ -35,13 +53,13 @@ obstaculos = {
 	tempoInsere: 0,
 	insere: function(){
 		this._obs.push({
-			x: 5+Math.floor(LARGURA*Math.random()),
+			x: 5 + Math.floor(LARGURA*Math.random()),
 			y: 0,
-			largura: 10 + Math.floor(20*Math.random()),
-			altura: 10 + Math.floor(30*Math.random()),
+			largura: 50,
+			altura: 50,
 			cor: this.cores[Math.floor(4*Math.random())]
 		});
-		this.tempoInsere = 300 + Math.floor(200*Math.random());
+		this.tempoInsere = 100 + Math.floor(200*Math.random());
 	},
 	atualiza: function(){
 		if(this.tempoInsere == 0)
@@ -50,19 +68,22 @@ obstaculos = {
 			this.tempoInsere--;
 		for(var i = 0, tam = this._obs.length; i < tam; i++){
 			var obs = this._obs[i];
-			obs.y += velocidadeLixo;
-			if (boneco.y + boneco.altura <= obs.y && obs.x < boneco.x + boneco.largura && obs.x + obs.largura > boneco.x) {
-				console.log('colisão');
-				VIDA--;
-				if(VIDA <= 0){
-					estadoAtual = estados.perdeu;
-				}
+
+			obs.y += velocidadeLixo; //queda do lixo.
+
+			if (boneco.y - boneco.altura <= obs.y && boneco.y >= obs.y - obs.altura && obs.x < boneco.x + boneco.largura && obs.x + obs.largura > boneco.x) {
+				SCORE += 15;
+				this._obs.splice(i, 1);
+				tam--;
+				i--;
 			}
 			/*Condições de colisão
 			1 - Y do boneco (MENOR) < que Y + altura do lixo
 			2 - Y + altura >= y do lixo
 			*/
 			if (obs.y > ALTURA) {
+				VIDA--;
+				if (VIDA <= 0) {estadoAtual = estados.jogar}
 				this._obs.splice(i, 1);
 				tam--;
 				i--;
@@ -85,13 +106,14 @@ boneco = {
 	cy: 0,
 	altura: 50,
 	largura: 33,
+	vida: 3,
 	cor: "#A8A83E",
 	border: 2,
 	gravidade: 1.2,
 	velocidade: 0,
 	forcaDoPulo: 25,
 	qntPulos: 0,
-	velocidadeMove: 12,
+	velocidadeMove: 20,
 
 	atualiza: function(){
 		this.velocidade += this.gravidade;
@@ -241,48 +263,27 @@ boneco = {
 }
 
 function click(event){
-	if (event.clientX > LARGURA / 2 - 50 && event.clientX < LARGURA / 2 + 50 && event.clientY > ALTURA / 2 - 50 && event.clientY < ALTURA / 2 + 50){
-		estadoAtual = estados.jogando;
-	}
+	
 	boneco.pula();
+
+	//if (event.clientX > LARGURA / 2 - 50 && event.clientX < LARGURA / 2 + 50 && event.clientY > ALTURA / 2 - 50 && event.clientY < ALTURA / 2 + 50){
+	if (estadoAtual == estados.jogar) {
+		location.reload();
+	}
+	//}
 }
 function keydown(event){
 	console.log('e : '+event.which);
-	switch (event.which) {
-		case 68: //btn D
-			boneco.desenha(33,99);
-			boneco.moveRight();
-			break;
-		case 65: //btn A
-			boneco.moveLeft();
-			break;
-		case 83: //btn S
-			boneco.moveDown();
-			break;
-		case 32: //btn espaço
-			boneco.pula();
-			break;
-		case 69: //btn E
-			boneco.teleportRight();
-			break;
-		case 81: //btn Q
-			boneco.teleportLeft();
-			break;
-		case 87: //btn w
-			boneco.moveUp();
-			break;
-		default:
-			// statements_def
-			break;
-	}
+	if (event.which == 68) {boneco.moveRight();} //DIREITA - D
+	if (event.which == 65) {boneco.moveLeft();} //ESQUERDA - E
+	if (event.which == 83) {/*boneco.moveDown();*/} //BAIXO - S
+	if (event.which == 32) {boneco.pula();} //PULA - espaço
+	if (event.which == 69) {boneco.teleportRight();} //E
+	if (event.which == 81) {boneco.teleportLeft();} //Q
+	if (event.which == 87) {/*boneco.moveUp();*/} //CIMA - W
 }
 
 function main(){
-
-	ALTURA = window.innerHeight;
-	LARGURA = window.innerWidth;
-	ALTURA -= margenY;
-	LARGURA -= margenX;
 
 	canvas = document.createElement("canvas");
 	canvas.width = LARGURA;
@@ -293,21 +294,24 @@ function main(){
 	document.body.appendChild(canvas);
 	document.addEventListener("mousedown", click);
 	document.addEventListener("keydown", keydown);
-	estadoAtual = estados.jogar;
+	estadoAtual = estados.jogando;
 	roda();
 }
 
 function roda(){
-	atualiza();
+	//if(estadoAtual == estados.jogando) {
+		atualiza();
+	//}
 	desenha();
-
 	window.requestAnimationFrame(roda)
 }
 
 function atualiza(){
-	frames++;
-	boneco.atualiza();
-	obstaculos.atualiza();
+		frames++;
+		boneco.atualiza();
+		obstaculos.atualiza();
+		chao.atualiza();
+		ceu.atualiza();
 }
 
 function desenha(){
@@ -318,18 +322,13 @@ function desenha(){
 
 	if (estadoAtual == estados.jogar) {
 		ctx.fillStyle = "green";
-		ctx.fillRect(LARGURA / 2 - 50, ALTURA / 2 - 50, 100, 100 );
-		ctx.font = "20px Georgia";
-		ctx.fillText = "Jogar";
+		ctx.font = "26px Comic Sans MS";
+		ctx.strokeText("JOGAR NOVAMENTE", LARGURA/2 - 10, ALTURA/2 - 10);
 	} else if(estadoAtual == estados.perdeu) {
-		ctx.fillStyle = "red";
-		ctx.fillRect(LARGURA / 2 - 50, ALTURA / 2 - 50, 100, 100 );
-		ctx.font = "20px Georgia";
-		ctx.fillText = "Game Over";
 	} else if(estadoAtual == estados.jogando) {
 		obstaculos.desenha();
-		//ceu.desenha();
-		//chao.desenha();
+		ceu.desenha();
+		chao.desenha();
 		boneco.desenha();
 	}
 
