@@ -1,4 +1,4 @@
-var canvas, ctx, ALTURA, LARGURA, frames = 0, maxPulos = 2, redimensionamento = 4, velocidadeLixo = 2, estadoAtual, SCORE = 0, VIDA = 3;
+var canvas, ctx, ALTURA, LARGURA, frames = 0, maxPulos = 2, redimensionamento = 4, velocidadeLixo = 2, insereLixo = 200, estadoAtual, SCORE = 0, VIDA = 3;
 var margenX = 20;
 var margenY = 40;
 ALTURA = window.innerHeight;
@@ -53,13 +53,13 @@ obstaculos = {
 	tempoInsere: 0,
 	insere: function(){
 		this._obs.push({
-			x: 5 + Math.floor(LARGURA*Math.random()),
+			x: 20 + Math.floor((LARGURA-40)*Math.random()),
 			y: 0,
 			largura: 50,
 			altura: 50,
 			cor: this.cores[Math.floor(4*Math.random())]
 		});
-		this.tempoInsere = 100 + Math.floor(200*Math.random());
+		this.tempoInsere = insereLixo + Math.floor(100*Math.random());
 	},
 	atualiza: function(){
 		if(this.tempoInsere == 0)
@@ -71,16 +71,23 @@ obstaculos = {
 
 			obs.y += velocidadeLixo; //queda do lixo.
 
+			//COLISÃO
 			if (boneco.y - boneco.altura <= obs.y && boneco.y >= obs.y - obs.altura && obs.x < boneco.x + boneco.largura && obs.x + obs.largura > boneco.x) {
+				
 				SCORE += 15;
+				if (SCORE % 45 == 0) {
+					console.log("---");
+					insereLixo -= 50;
+				}
+				if (SCORE % 105 == 0) {
+					velocidadeLixo += 1;
+				}
+
 				this._obs.splice(i, 1);
 				tam--;
 				i--;
 			}
-			/*Condições de colisão
-			1 - Y do boneco (MENOR) < que Y + altura do lixo
-			2 - Y + altura >= y do lixo
-			*/
+
 			if (obs.y > ALTURA) {
 				VIDA--;
 				if (VIDA <= 0) {estadoAtual = estados.jogar}
