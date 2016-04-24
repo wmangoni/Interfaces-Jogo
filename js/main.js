@@ -1,4 +1,4 @@
-var canvas, ctx, ALTURA, LARGURA, frames = 0, maxPulos = 2, redimensionamento = 4, velocidadeLixo = 2, insereLixo = 200, estadoAtual, SCORE = 0, VIDA = 3;
+var canvas, ctx, ALTURA, LARGURA, frames = 0, maxPulos = 2, redimensionamento = 4, velocidadeLixo = 2, insereLixo = 200, estadoAtual, SCORE = 0, VIDA = 5;
 var margenX = 20;
 var margenY = 40;
 ALTURA = window.innerHeight;
@@ -48,16 +48,25 @@ ceu = {
 }
 
 obstaculos = {
+	//banaa, lata, papel, injeção, garrafa pet, jornal, rolo, maçã, garrafa vidro
 	_obs: [],
-	cores: ["#ff0000", "#2E54FF", "#f6ff00", "#80ff00"],
+	nome: ["banana", "lata", "papel", "injeção", "garrafa pet", "jornal", "rolo", "maçã", "garrafa vidro", "pilha"],
+	cx: [0, 30, 50, 73, 98, 126, 188, 243, 268, 6],
+	cy: [0, 0, 0, 0, 0, 0, 0, 0, 0, 27],
+	altura: [27, 27, 27, 27, 50, 45, 45, 48, 50, 50],
+	largura: [25, 19, 20, 23, 25, 59, 51, 26, 23, 22],
 	tempoInsere: 0,
 	insere: function(){
+		var lixo = Math.floor(10*Math.random());
+		console.log(this.nome[lixo]);
 		this._obs.push({
 			x: 20 + Math.floor((LARGURA-40)*Math.random()),
 			y: 0,
-			largura: 50,
-			altura: 50,
-			cor: this.cores[Math.floor(4*Math.random())]
+			cx: this.cx[lixo],
+			cy: this.cy[lixo],
+			largura: this.largura[lixo],
+			altura: this.altura[lixo],
+			//cor: this.cores[Math.floor(4*Math.random())]
 		});
 		this.tempoInsere = insereLixo + Math.floor(100*Math.random());
 	},
@@ -76,8 +85,7 @@ obstaculos = {
 				
 				SCORE += 15;
 				if (SCORE % 45 == 0) {
-					console.log("---");
-					insereLixo -= 50;
+					insereLixo -= 30;
 				}
 				if (SCORE % 105 == 0) {
 					velocidadeLixo += 1;
@@ -100,8 +108,21 @@ obstaculos = {
 	desenha: function(){
 		for (var i = 0, tam = this._obs.length; i < tam; i++) {
 			var obs = this._obs[i];
-			ctx.fillStyle = obs.cor;
-			ctx.fillRect(obs.x, obs.y, obs.largura, obs.altura);
+			var img = new Image();
+			img.src = "img/lixos/lixo.png";
+			ctx.drawImage(
+				img,
+				obs.cx,
+				obs.cy,
+				obs.largura,
+				obs.altura,
+				obs.x,
+				obs.y,
+				obs.largura*2,
+				obs.altura*2
+			);
+				//ctx.fillStyle = obs.cor;
+				//ctx.fillRect(obs.x, obs.y, obs.largura, obs.altura);
 		};
 	}
 }
@@ -265,7 +286,7 @@ boneco = {
 	desenha: function(){
 		var img = new Image();
 		img.src = "img/spritexb-1869.png";
-		ctx.drawImage(img,this.cx,this.cy,33,50,this.x,this.y,this.largura,this.altura);
+		ctx.drawImage(img,this.cx,this.cy,33,50,this.x,this.y,this.largura*2,this.altura*2);
 	}
 }
 
@@ -330,7 +351,7 @@ function desenha(){
 	if (estadoAtual == estados.jogar) {
 		ctx.fillStyle = "green";
 		ctx.font = "26px Comic Sans MS";
-		ctx.strokeText("JOGAR NOVAMENTE", LARGURA/2 - 10, ALTURA/2 - 10);
+		ctx.strokeText("JOGAR NOVAMENTE", LARGURA/2 - 20, ALTURA/2 - 10);
 	} else if(estadoAtual == estados.perdeu) {
 	} else if(estadoAtual == estados.jogando) {
 		obstaculos.desenha();
