@@ -374,14 +374,14 @@ function desenha(){
 	if (estadoAtual == estados.jogar) {
 		ctx.fillStyle = "green";
 		ctx.font = "26px Comic Sans MS";
-		ctx.fillText("JOGAR NOVAMENTE", LARGURA/2 - 40, ALTURA/2 - 10);
+		ctx.fillText("JOGAR NOVAMENTE", LARGURA/2 - 120, ALTURA/2 - 10);
 	} else if(estadoAtual == estados.perdeu) {
 	} else if(estadoAtual == estados.jogando) {
 		obstaculos.desenha();
 		ceu.desenha();
-		chao.desenha();
 		boneco.desenha();
 	}
+		chao.desenha();
 
 }
 
