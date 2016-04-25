@@ -1,4 +1,4 @@
-var canvas, ctx, ALTURA, LARGURA, frames = 0, maxPulos = 2, redimensionamento = 4, velocidadeLixo = 2, insereLixo = 200, estadoAtual, SCORE = 0, VIDA = 5;
+var canvas, ctx, ALTURA, LARGURA, frames = 0, maxPulos = 2, redimensionamento = 4, velocidadeLixo = 2, insereLixo = 210, estadoAtual, SCORE = 0, VIDA = 5, MOVE_RIGHT = false, MOVE_LEFT = false;
 var margenX = 20;
 var margenY = 40;
 ALTURA = window.innerHeight;
@@ -22,7 +22,8 @@ chao = {
 	desenha: function(){
 		ctx.fillStyle = this.cor;
 		ctx.font = "26px Comic Sans MS";
-		ctx.strokeText(this.text, 20, ALTURA - 26);
+		ctx.fillText(this.text, 20, ALTURA - 26);
+		//ctx.strokeText(this.text, 20, ALTURA - 26);
 		//ctx.fillRect(0, this.y, this.largura, this.altura);
 	},
 
@@ -39,7 +40,7 @@ ceu = {
 	desenha: function(){
 		ctx.fillStyle = this.cor;
 		ctx.font = "26px Comic Sans MS";
-		ctx.strokeText(this.text, 20, this.y + 26);
+		ctx.fillText(this.text, 20, this.y + 26);
 	},
 
 	atualiza: function(){
@@ -68,6 +69,7 @@ obstaculos = {
 			altura: this.altura[lixo],
 			//cor: this.cores[Math.floor(4*Math.random())]
 		});
+
 		this.tempoInsere = insereLixo + Math.floor(100*Math.random());
 	},
 	atualiza: function(){
@@ -82,9 +84,9 @@ obstaculos = {
 
 			//COLISÃO
 			if (boneco.y - boneco.altura <= obs.y && boneco.y >= obs.y - obs.altura && obs.x < boneco.x + boneco.largura && obs.x + obs.largura > boneco.x) {
-				
+
 				SCORE += 15;
-				if (SCORE % 45 == 0) {
+				if (SCORE % 45 == 0 && insereLixo > 30) {
 					insereLixo -= 30;
 				}
 				if (SCORE % 105 == 0) {
@@ -141,7 +143,7 @@ boneco = {
 	velocidade: 0,
 	forcaDoPulo: 25,
 	qntPulos: 0,
-	velocidadeMove: 20,
+	velocidadeMove: 12,
 
 	atualiza: function(){
 		this.velocidade += this.gravidade;
@@ -151,6 +153,12 @@ boneco = {
 			this.y = chao.y - this.altura;
 			this.qntPulos = 0;
 		}
+		if (MOVE_RIGHT) {
+			this.moveRight();
+		}
+		if(MOVE_LEFT){
+			boneco.moveLeft();
+		}
 	},
 
 	pula: function(){
@@ -159,6 +167,10 @@ boneco = {
 			this.qntPulos++;
 		}
 	},
+	// stop: function(){
+	// 	this.cx = 0;
+	// 	this.cy = 0;
+	// },
 
 	moveRight: function(){
 		switch (this.cx) {
@@ -291,7 +303,7 @@ boneco = {
 }
 
 function click(event){
-	
+
 	boneco.pula();
 
 	//if (event.clientX > LARGURA / 2 - 50 && event.clientX < LARGURA / 2 + 50 && event.clientY > ALTURA / 2 - 50 && event.clientY < ALTURA / 2 + 50){
@@ -301,9 +313,19 @@ function click(event){
 	//}
 }
 function keydown(event){
-	console.log('e : '+event.which);
-	if (event.which == 68) {boneco.moveRight();} //DIREITA - D
-	if (event.which == 65) {boneco.moveLeft();} //ESQUERDA - E
+
+	//console.log('e : '+event.which);
+	if (event.which == 68) {MOVE_RIGHT = true} //DIREITA - D
+	if (event.which == 65) {MOVE_LEFT = true} //ESQUERDA - E
+	if (event.which == 83) {/*boneco.moveDown();*/} //BAIXO - S
+	if (event.which == 32) {boneco.pula();} //PULA - espaço
+	if (event.which == 69) {boneco.teleportRight();} //E
+	if (event.which == 81) {boneco.teleportLeft();} //Q
+	if (event.which == 87) {/*boneco.moveUp();*/} //CIMA - W
+}
+function keyup(event){
+	if (event.which == 68) {MOVE_RIGHT = false} //DIREITA - D
+	if (event.which == 65) {MOVE_LEFT = false} //ESQUERDA - E
 	if (event.which == 83) {/*boneco.moveDown();*/} //BAIXO - S
 	if (event.which == 32) {boneco.pula();} //PULA - espaço
 	if (event.which == 69) {boneco.teleportRight();} //E
@@ -322,6 +344,7 @@ function main(){
 	document.body.appendChild(canvas);
 	document.addEventListener("mousedown", click);
 	document.addEventListener("keydown", keydown);
+	document.addEventListener("keyup", keyup);
 	estadoAtual = estados.jogando;
 	roda();
 }
@@ -351,7 +374,7 @@ function desenha(){
 	if (estadoAtual == estados.jogar) {
 		ctx.fillStyle = "green";
 		ctx.font = "26px Comic Sans MS";
-		ctx.strokeText("JOGAR NOVAMENTE", LARGURA/2 - 20, ALTURA/2 - 10);
+		ctx.fillText("JOGAR NOVAMENTE", LARGURA/2 - 40, ALTURA/2 - 10);
 	} else if(estadoAtual == estados.perdeu) {
 	} else if(estadoAtual == estados.jogando) {
 		obstaculos.desenha();
